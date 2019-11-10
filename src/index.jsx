@@ -71,7 +71,13 @@ const reducer = (state, action) => {
   }
 };
 
-const store = createStore(reducer, buildInitialState());
+/* eslint-disable no-underscore-dangle */
+const store = createStore(
+  reducer,
+  buildInitialState(),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
+/* eslint-enable */
 
 store.subscribe(tick(store));
 
