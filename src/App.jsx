@@ -9,7 +9,8 @@ function AppComponent(props) {
   return (
     <div className="App">
       <div className="control-panel">
-        {`Time: ${time}`}
+        <div className="timer">{`Time: ${time}`}</div>
+        <button type="button" className="pause-button" onClick={() => props.dispatch({ type: 'PAUSE_CLICK' })}>Pause</button>
       </div>
       <div className="lanes">
         {
@@ -40,6 +41,7 @@ const App = connect(
 AppComponent.propTypes = {
   lanes: PropTypes.objectOf(PropTypes.any).isRequired,
   time: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default App;

@@ -9,6 +9,11 @@ import App from './App';
 
 const buildInitialState = () => ({
   time: 0,
+  paused: false,
+  nextTask: 8,
+  modelParams: {
+    avgNewTasks: 2,
+  },
   lanes: {
     backlog: {
       tasks: ['task1'],
@@ -29,7 +34,6 @@ const buildInitialState = () => ({
   },
 });
 
-const nextState = (state) => ({ ...state, time: state.time + 1 });
 const nextState = (state) => {
   let { nextTask } = state;
   const { lanes: { backlog } } = state;
@@ -53,7 +57,13 @@ const nextState = (state) => {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'TICK': {
-      return nextState(state);
+      if (!state.paused) {
+        return nextState(state);
+      }
+      return state;
+    }
+    case 'PAUSE_CLICK': {
+      return { ...state, paused: !state.paused };
     }
     default: {
       return state;
