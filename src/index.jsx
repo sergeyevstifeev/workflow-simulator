@@ -40,8 +40,8 @@ const nextState = (state) => {
   const numberOfNewTasks = random.poisson(state.modelParams.avgNewTasks)();
   [...Array(numberOfNewTasks)].forEach((_, i) => {
     backlog.tasks.push(`task${i + nextTask}`);
-    nextTask += 1;
   });
+  nextTask += numberOfNewTasks;
 
   return {
     ...state,
