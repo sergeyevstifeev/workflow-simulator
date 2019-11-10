@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import random from 'random';
 import tick from './effects/tick';
 import './index.css';
 import App from './App';
@@ -29,6 +30,25 @@ const buildInitialState = () => ({
 });
 
 const nextState = (state) => ({ ...state, time: state.time + 1 });
+const nextState = (state) => {
+  let { nextTask } = state;
+  const { lanes: { backlog } } = state;
+  const numberOfNewTasks = random.poisson(state.modelParams.avgNewTasks)();
+  [...Array(numberOfNewTasks)].forEach((_, i) => {
+    backlog.tasks.push(`task${i + nextTask}`);
+    nextTask += 1;
+  });
+
+  return {
+    ...state,
+    nextTask,
+    lanes: {
+      ...state.lanes,
+      backlog,
+    },
+    time: state.time + 1,
+  };
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
