@@ -9,7 +9,22 @@ import App from './App';
 const buildInitialState = () => ({
   time: 0,
   lanes: {
-    lane1: ['task1'],
+    backlog: {
+      tasks: ['task1'],
+      order: 1,
+    },
+    todo: {
+      tasks: ['task2', 'task3'],
+      order: 2,
+    },
+    inProgress: {
+      tasks: ['task4', 'task5', 'task6'],
+      order: 3,
+    },
+    done: {
+      tasks: ['task7'],
+      order: 4,
+    },
   },
 });
 

@@ -1,22 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import logo from './logo.svg';
+import { prop, propOr, sortBy } from 'ramda';
 import './App.css';
 
 function AppComponent(props) {
   const { lanes, time } = props;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          {`Lanes state: ${JSON.stringify(lanes)}`}
-        </p>
-        <p>
-          {`Time: ${time}`}
-        </p>
-      </header>
+      <div className="control-panel">
+        {`Time: ${time}`}
+      </div>
+      <div className="lanes">
+        {
+            sortBy(prop('order'), Object.keys(lanes)).map((laneId) => {
+              const laneData = prop(laneId, lanes);
+              return (
+                <div className="lane">
+                  <div className="lane-header">{laneId}</div>
+                  <div>{propOr([], 'tasks', laneData).map((task) => <div className="task">{task}</div>)}</div>
+                </div>
+              );
+            })
+          }
+      </div>
     </div>
   );
 }
@@ -31,7 +38,7 @@ const App = connect(
 )(AppComponent);
 
 AppComponent.propTypes = {
-  lanes: PropTypes.arrayOf(PropTypes.any).isRequired,
+  lanes: PropTypes.objectOf(PropTypes.any).isRequired,
   time: PropTypes.number.isRequired,
 };
 
